@@ -24,7 +24,7 @@ export default class DNA {
     }
 
     _isMutated() {
-        return Math.random() < 0.05;
+        return Math.random() < 0.1;
     }
 
     getChild(partner) {

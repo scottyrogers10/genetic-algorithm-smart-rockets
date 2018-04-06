@@ -14,13 +14,32 @@ export default class Population {
     }
 
     _fillPool() {
+        const fittestRating = this._getFittestRating();
         this.pool = [];
 
         this.rockets.forEach(rocket => {
-            for (let i = 0; i < rocket.fitness; i++) {
-                this.pool.push(rocket);
+            if (rocket.fitness / fittestRating > 0.2) {
+                if (rocket.fitness / fittestRating > 0.98) {
+                    rocket.fitness *= 10;
+                }
+
+                for (let i = 0; i < rocket.fitness; i++) {
+                    this.pool.push(rocket);
+                }
             }
         });
+    }
+
+    _getFittestRating() {
+        let fittestRating = 0;
+
+        this.rockets.forEach(rocket => {
+            if (rocket.fitness > fittestRating) {
+                fittestRating = rocket.fitness;
+            }
+        });
+
+        return fittestRating;
     }
 
     _getMaxDistance() {

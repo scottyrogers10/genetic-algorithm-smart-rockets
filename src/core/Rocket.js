@@ -64,6 +64,30 @@ export default class Rocket extends Body {
         }
     }
 
+    _isBarrierHitSide() {
+        let isBarrierHitSide = false;
+
+        globalState.barriers.forEach(barrier => {
+            if (
+                this.position.x > barrier.position.x &&
+                this.position.x < barrier.position.x + barrier.size.width &&
+                this.position.y < barrier.position.y + barrier.size.height &&
+                this.position.y > barrier.position.y
+            ) {
+                if (
+                    this.position.x > barrier.position.x + 10 &&
+                    this.position.x < this.position.x + barrier.size.width - 10
+                ) {
+                    isBarrierHitSide = false;
+                } else {
+                    isBarrierHitSide = true;
+                }
+            }
+        });
+
+        return isBarrierHitSide;
+    }
+
     _move() {
         this.velocity.add(this.acceleration);
         this.position.add(this.velocity);
@@ -99,7 +123,17 @@ export default class Rocket extends Body {
         this.fitness = (maxDistance - this.getDistance()) / maxDistance * 100 + 1;
 
         if (this.hitType === "TARGET") {
-            this.fitness *= 2;
+            this.fitness *= 5;
+        }
+
+        if (this.hitType === "BARRIER") {
+            if (!this._isBarrierHitSide()) {
+                this.fitness /= 2;
+            }
+        }
+
+        if (this.hitType === "WALL" && this.position.y > globalState.screen.height / 3) {
+            this.fitness /= 1.1;
         }
     }
 

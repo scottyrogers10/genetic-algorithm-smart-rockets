@@ -9,7 +9,7 @@ const screen = {
 };
 
 const maxFrames = 100;
-const rocketCount = 10;
+const rocketCount = 100;
 
 const target = new Target({ x: screen.width / 2 - 25, y: 50 }, { width: 50, height: 25 }, "#ffc107");
 const barriers = [
